@@ -1,0 +1,21 @@
+{
+  "version": {
+    "name": "1.21.2",
+    "protocol": 768
+  },
+  "players": {
+    "max": 100,
+    "online": 0,
+    "sample": [
+      {
+        "name": "thinkofdeath",
+        "id": "4566e69f-c907-48ee-8d71-d7ba5aa00d20"
+      }
+    ]
+  },
+  "description": {
+    "text": "Hello, world!"
+  },
+  "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAP1BMVEVHcEyvra8RESKMjI1sDRhZGwp3JQ6GHRC1KBSRESDnQhiblJePKxCvFSeHhIYnJj5+fn90bW9VVVXYLhrQ0NJVtJt9AAAAAXRSTlMAQObYZgAAAWtJREFUOMt9k4u6giAQhAVWEJC77/+sZxYw0zqRxlf8M8uOsiy34ZpbfowQlFKu/bvunNv3PWD6ttq6XMogVVWtfYoVy+uYpFQPlxZUrbXVyhatm4XLBequc1wBg3/1ebpsnQ/NyQHAJrDLjok6sG2W1VWiBAamULnbfTfrAKzdwKM/9kUbsndryNAJaLhgHW1WqCFvkNN6A+CyQedGWFCbJ8B3zyoM9QUcYgI8Qb0PNd/RDwDjBNCQWScQY+6A8CkJMQGrzQRyTjLG6SAlu7wDMWI1lhNI/RIvIEfo8VV6Ce8FDFKSYyvGxBxTAsAEA9YDgQM+sDk8aufESC5l5GA1kNTrSABRwj9mWQqtr6DsqIPriAXbS6y+JdldAHjheXtQ0ytJOwMYexEo0dVX1IudUWt2OfxUvwEL1KOMhUuhM+qVrpfW2hm11jSjJnq8+NrengV9npw3gOj70dNcCQD9OL5W069ldnn+8QfelBf1Jzio7wAAAABJRU5ErkJggg==",
+  "enforcesSecureChat": false
+}
