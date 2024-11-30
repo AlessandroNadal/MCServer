@@ -21,6 +21,5 @@ class Packet(Buffer):
     def send(self, protocol: Protocol):
         protocol.write(VarInt.pack(len(self.getvalue())) + self.getvalue())
 
-    def __str__(self) -> None:
-        print(self.getvalue())
-        print("".join([f"{x:02x} " for x in self.getvalue()]))
+    def __str__(self) -> str:
+        return "".join([chr(x) if chr(x).isalpha() else f" {x:02x} " for x in self.getvalue()])

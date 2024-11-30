@@ -48,15 +48,15 @@ class Status(Stage):
 
     @listen(0x00)
     def status_request(self):
-        print("STATUS REQUEST")
-        response = Packet(packet_id=0x00)
+        status_response = Packet(packet_id=0x00)
         status_text = json.dumps(get_status())
 
-        response.pack_string(status_text)
-        response.send(self.transport)
+        status_response.pack_string(status_text)
+        self.send(status_response)
 
     @listen(0x01)
     def ping_request(self, timestamp: Long) -> None:
-        pong = Packet(packet_id=0x01)
-        pong.pack_long(timestamp)
-        pong.send(self.transport)
+        pong_response = Packet(packet_id=0x01)
+        pong_response.pack_long(timestamp)
+
+        self.send(pong_response)

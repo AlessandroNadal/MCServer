@@ -104,3 +104,9 @@ class Buffer(io.BytesIO):
 
     def unpack_uuid(self) -> uuid.UUID:
         return UUID.unpack(self)
+
+    def pack_bytes(self, data: bytes) -> None:
+        self.write(data)
+
+    def unpack_bytes(self) -> bytes:
+        return self.read()

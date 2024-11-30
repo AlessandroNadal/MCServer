@@ -1,22 +1,24 @@
 import inspect
+from logging import Logger
 from typing import Callable, Any
 
 from twisted.internet.protocol import Protocol
 
 from src.packet import Packet
-from src.structs import String, VarInt, UShort
 
 
 class Stage:
     listeners: dict[int, Callable]
 
-    def __init__(self, transport: Protocol) -> None:
+    def __init__(self, transport: Protocol, logger: Logger) -> None:
+        self.logger = logger
         self.transport = transport
 
     def process_packet(self, packet: Packet) -> int | None:
+        self.logger.debug(f"Packet ID: {hex(packet.id)}")
         fn = self.listeners.get(packet.id)
         if fn is None:
-            print(f"Packet with packet_id: {packet.id} not found")
+            self.logger.warning(f"Packet with packet_id: {packet.id} not found")
             return
 
         args = self.decode_args(packet)
@@ -31,12 +33,18 @@ class Stage:
 
             struct_type = struct.annotation
             if struct_type == inspect.Parameter.empty:
-                print(f"Parameter {name} does not have an assigned annotation")
+                self.logger.warning(f"Parameter {name} does not have an assigned annotation")
                 continue
 
-            params.append(struct_type.unpack(packet))
+            val: Any = struct_type.unpack(packet)
+
+            params.append(val)
+            self.logger.debug(f"{name}: {val}")
 
         return params
+
+    def send(self, packet: Packet) -> None:
+        packet.send(self.transport)
 
 
 class listen_wrap:

@@ -3,6 +3,7 @@ import struct
 import uuid
 from io import BytesIO
 from typing import Any, ClassVar
+from uuid import UUID
 
 
 class BaseStruct(metaclass=abc.ABCMeta):
@@ -149,5 +150,15 @@ class UUID(uuid.UUID, BaseStruct):
         return _uuid.bytes
 
     @classmethod
-    def unpack(cls, buffer: BytesIO) -> str:
-        return uuid.UUID(bytes=buffer.read(16)).hex
+    def unpack(cls, buffer: BytesIO) -> UUID:
+        return uuid.UUID(bytes=buffer.read(16))
+
+
+class Bytes(BaseStruct):
+    @classmethod
+    def pack(cls, val: bytes) -> bytes:
+        return val
+
+    @classmethod
+    def unpack(cls, buffer: BytesIO) -> bytes:
+        return buffer.read()
