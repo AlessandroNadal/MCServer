@@ -22,7 +22,7 @@ class Struct(int, BaseStruct):
     fmt: ClassVar[str]
 
     @classmethod
-    def pack(cls, val: int) -> bytes:
+    def pack(cls, val: float) -> bytes:
         return struct.pack(cls.fmt, val)
 
     @classmethod

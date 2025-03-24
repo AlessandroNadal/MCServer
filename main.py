@@ -1,4 +1,4 @@
-from src import server
+from src import serverprocess
 
 if __name__ == "__main__":
-    server.start()
+    serverprocess.start()

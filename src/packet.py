@@ -1,7 +1,11 @@
+import string
+
 from twisted.internet.protocol import Protocol
 
 from src.buffer import Buffer
 from src.structs import VarInt
+
+string_characters = string.ascii_letters + string.digits + ":_"
 
 
 class Packet(Buffer):
@@ -19,7 +23,7 @@ class Packet(Buffer):
             self.pack_varint(packet_id)
 
     def send(self, protocol: Protocol):
-        protocol.write(VarInt.pack(len(self.getvalue())) + self.getvalue())
+        protocol.transport.write(VarInt.pack(len(self.getvalue())) + self.getvalue())
 
     def __str__(self) -> str:
-        return "".join([chr(x) if chr(x).isalpha() else f" {x:02x} " for x in self.getvalue()])
+        return " ".join([f"{x:02x}" if chr(x) not in string_characters else chr(x) for x in self.getvalue()])

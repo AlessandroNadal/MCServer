@@ -69,16 +69,16 @@ class Buffer(io.BytesIO):
     def unpack_long(self) -> int:
         return Long.unpack(self)
 
-    def pack_float(self, val: int) -> None:
+    def pack_float(self, val: float) -> None:
         self.write(Float.pack(val))
 
-    def unpack_float(self) -> int:
+    def unpack_float(self) -> float:
         return Float.unpack(self)
 
-    def pack_double(self, val: int) -> None:
+    def pack_double(self, val: float) -> None:
         self.write(Double.pack(val))
 
-    def unpack_double(self) -> int:
+    def unpack_double(self) -> float:
         return Double.unpack(self)
 
     def pack_string(self, val: str) -> None:
