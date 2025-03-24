@@ -12,6 +12,10 @@ from src.server import Server
 with open("resources/packets.json") as f:
     packets = json.load(f)
 
+HIDDEN_PACKETS = (
+    0x0b,
+)
+
 
 class Stage:
     listeners: dict[int, Callable]
@@ -22,19 +26,28 @@ class Stage:
         self.server = server
         self.protocol = protocol
 
-    def process_packet(self, packet: Packet, debug: bool = False) -> int | None:
-        description = list(
-            filter(
-                lambda p: p[1]["protocol_id"] == packet.id,
-                packets[self.__class__.__name__.lower()]["serverbound"].items(),
-            )
-        )[0][0]
-        if debug:
-            self.logger.debug(f"Packet ID: {hex(packet.id)} {description}")
+    def process_packet(self, packet: Packet) -> int | None:
+        try:
+            description = list(
+                filter(
+                    lambda p: p[1]["protocol_id"] == packet.id,
+                    packets[self.__class__.__name__.lower()]["serverbound"].items(),
+                )
+            )[0][0]
+        except IndexError as e:
+            description = e
+
         fn = self.listeners.get(packet.id)
-        if fn is None:
-            self.logger.warning(f"Packet with packet_id: {hex(packet.id)} not found")
-            return
+        if packet.id not in HIDDEN_PACKETS:
+            self.logger.debug("-" * 20)
+            self.logger.debug(f"Packet ID: {hex(packet.id)}")
+            self.logger.debug(f"Stage {self.__class__.__name__}")
+            self.logger.debug(f"Description: {description}")
+            self.logger.debug(packet)
+            if fn is None:
+                self.logger.warning(f"Packet with packet_id: {hex(packet.id)} not found")
+                self.logger.debug(packet)
+                return
 
         args = self.decode_args(packet)
         return fn(self, *args)

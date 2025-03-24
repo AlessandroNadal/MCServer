@@ -4,7 +4,7 @@ from typing import Callable
 from src import Packet
 from src.buffer import Buffer
 from src.stages.stage import Stage, listen
-from src.structs import Double, Boolean, Float, Long, VarInt, Byte
+from src.structs import Double, Boolean, Float, Long, VarInt, Byte, UUID
 
 
 class Play(Stage):
@@ -96,6 +96,10 @@ class Play(Stage):
                 if new_chunk_range:
                     self.generate_chunk(chunk_x, chunk_z)
 
+    @listen(0x00)
+    def accept_teleportation(self, teleport_id: VarInt):
+        pass
+
     @listen(0x1a)
     def keep_alive(self, payload: Long):
         pass
@@ -126,6 +130,7 @@ class Play(Stage):
     @listen(0x1f)
     def move_player_status_only(self, flags: Byte):
         pass
+
 
     # @listen(0x25)
     # def player_command(self, player_id: VarInt, action_id: VarInt, jump_boost: VarInt):

@@ -13,6 +13,9 @@ class Player:
 
         self.pos: Position | None = None
 
+    def __str__(self):
+        return f"Player({self.name=}, {self.uuid=}, {self.pos=}"
+
     def spawn(self):
         if self.pos is None:
             raise Exception("Player is not syncronized yet")

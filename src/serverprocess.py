@@ -42,17 +42,14 @@ class ServerProcess(Protocol):
         self.keep_alive_loop = task.LoopingCall(self.keep_alive)
 
     def connectionLost(self, reason: failure.Failure = connectionDone) -> None:
-        self.server.save_players()
+        if isinstance(self.stage, Play):
+            self.server.player_disconnect(self.player)
 
     def dataReceived(self, data: bytes) -> None:
         buffer = io.BytesIO(data)
         packet = Packet(initial_bytes=buffer.read(VarInt.unpack(buffer)))
-        if packet.id != 0x0b:
-            logger.debug("-" * 20)
-            logger.debug(packet)
-            logger.debug(f"Stage: {self.stage.__class__.__name__.title()}")
 
-        next_stage = self.stage.process_packet(packet, debug=packet.id != 0x0b)
+        next_stage = self.stage.process_packet(packet)
         if next_stage is None:
             return
 

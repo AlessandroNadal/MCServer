@@ -9,7 +9,7 @@ class Server:
         self.players: set[Player] = set()
 
         with open("resources/players.json", encoding="utf-8") as f:
-                self.stored_players = json.load(f)
+            self.stored_players = json.load(f)
 
     def add_player(self, player: Player) -> None:
         self.players.add(player)
@@ -21,6 +21,18 @@ class Server:
             return
 
         player.pos = Position.from_player_data(player_data)
+
+    def player_disconnect(self, player: Player):
+        print(player)
+        self.stored_players[str(player.uuid)] = {
+            "pos": {
+                "x": player.pos.x,
+                "y": player.pos.y,
+                "z": player.pos.z,
+                "yaw": player.pos.yaw,
+                "pitch": player.pos.pitch
+            }
+        }
 
     def save_players(self) -> None:
         for player in self.players:
