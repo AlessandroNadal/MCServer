@@ -9,7 +9,7 @@ from src.structs import String, UUID
 class Login(Stage):
     listeners: dict[int, Callable] = dict()
 
-    @listen(0x00)
+    @listen("minecraft:hello")
     def login_start(self, name: String, uuid: UUID):
         login_success = Packet(packet_id=0x02)
         login_success.pack_uuid(uuid)
@@ -23,7 +23,7 @@ class Login(Stage):
 
         self.send(login_success)
 
-    @listen(0x03)
+    @listen("minecraft:login_acknowledged")
     def login_acknowledged(self):
         select_known_packs = Packet(packet_id=0x0E)
         select_known_packs.pack_varint(1)

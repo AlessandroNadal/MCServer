@@ -75,4 +75,5 @@ class ServerFactory(protocol.Factory):
 def start(port: int = 25565) -> None:
     logger.info(f"Server started at port {port}")
     endpoints.serverFromString(reactor, f"tcp:{port}").listen(ServerFactory())
+    # noinspection PyUnresolvedReferences
     reactor.run()

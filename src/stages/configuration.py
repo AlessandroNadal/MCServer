@@ -53,7 +53,7 @@ class Configuration(Stage):
 
         self.send(chunk_data)
 
-    @listen(0x00)
+    @listen("minecraft:client_information")
     def client_information(
             self,
             locale: String,
@@ -71,11 +71,11 @@ class Configuration(Stage):
         for name, flag in SKIN_PART_FLAGS.items():
             self.logger.info(f"\t{name} {"Enabled" if flag & displayed_skin_parts else "Disabled"}")
 
-    @listen(0x02)
+    @listen("minecraft:custom_payload")
     def custom_payload(self, channel: String, data: Bytes):
         pass
 
-    @listen(0x03)
+    @listen("minecraft:finish_configuration")
     def finish_configuration(self):
         login_play = Packet(packet_id=0x2C)
         login_play.pack_int(69)
@@ -119,6 +119,6 @@ class Configuration(Stage):
 
         return 0
 
-    @listen(0x07)
+    @listen("minecraft:select_known_packs")
     def select_known_packs(self, count: VarInt, known_packs: Bytes):
         pass

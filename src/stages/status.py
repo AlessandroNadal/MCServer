@@ -46,7 +46,7 @@ def get_status(
 class Status(Stage):
     listeners: dict[int, Callable] = dict()
 
-    @listen(0x00)
+    @listen("minecraft:status_request")
     def status_request(self):
         status_response = Packet(packet_id=0x00)
         status_text = json.dumps(get_status())
@@ -54,7 +54,7 @@ class Status(Stage):
         status_response.pack_string(status_text)
         self.send(status_response)
 
-    @listen(0x01)
+    @listen("minecraft:ping_request")
     def ping_request(self, timestamp: Long) -> None:
         pong_response = Packet(packet_id=0x01)
         pong_response.pack_long(timestamp)

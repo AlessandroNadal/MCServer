@@ -96,23 +96,23 @@ class Play(Stage):
                 if new_chunk_range:
                     self.generate_chunk(chunk_x, chunk_z)
 
-    @listen(0x00)
+    @listen("minecraft:accept_teleportation")
     def accept_teleportation(self, teleport_id: VarInt):
         pass
 
-    @listen(0x1a)
+    @listen("minecraft:keep_alive")
     def keep_alive(self, payload: Long):
         pass
 
-    @listen(0x0b)
+    @listen("minecraft:client_tick_end")
     def client_tick_end(self):
         pass
 
-    @listen(0x1c)
+    @listen("minecraft:move_player_pos")
     def move_player_pos(self, x: Double, y_feet: Double, z: Double, flags: Byte) -> None:
         self.handle_position(x, y_feet, z, None, None)
 
-    @listen(0x1d)
+    @listen("minecraft:move_player_pos_rot")
     def move_player_pos_rot(
             self,
             x: Double,
@@ -123,11 +123,11 @@ class Play(Stage):
             flags: Byte):
         self.handle_position(x, y_feet, z, yaw, pitch)
 
-    @listen(0x1e)
+    @listen("minecraft:move_player_rot")
     def move_player_rot(self, yaw: Float, pitch: Float, on_ground: Boolean):
         pass
 
-    @listen(0x1f)
+    @listen("minecraft:move_player_status_only")
     def move_player_status_only(self, flags: Byte):
         pass
 

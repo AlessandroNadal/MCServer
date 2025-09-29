@@ -76,18 +76,20 @@ class Stage:
 
 
 class listen_wrap:
-    def __init__(self, packet_id: int, fn: Callable, owner: Stage = None) -> None:
+    def __init__(self, packet_id: str, fn: Callable, owner: Stage = None) -> None:
         self.packet_id = packet_id
         self.fn = fn
         self.owner = owner
 
     def __set_name__(self, owner, name):
         self.owner = owner
-        self.owner.listeners[self.packet_id] = self.fn
+        stage_id = self.owner.__name__.lower()
+        protocol_id = packets[stage_id]["serverbound"][self.packet_id]["protocol_id"]
+        self.owner.listeners[protocol_id] = self.fn
 
     def __call__(self, *args, **kwargs):
         return self.fn(*args, **kwargs)
 
 
-def listen(packet_id: int):
+def listen(packet_id: str):
     return lambda func: listen_wrap(packet_id, func)
