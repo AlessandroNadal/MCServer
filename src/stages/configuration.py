@@ -31,7 +31,7 @@ class Configuration(Stage):
             chunk.pack_short(4096)
 
             chunk.pack_ubyte(0)
-            chunk.pack_varint(0 if z >= 8 else 1)
+            chunk.pack_varint(0 if z >= 1 else 2)
             chunk.pack_varint(0)
 
             chunk.pack_ubyte(0)
@@ -105,17 +105,17 @@ class Configuration(Stage):
 
         self.send(login_play)
 
-        self.player.spawn()
 
         game_event = Packet(packet_id=0x23)
         game_event.pack_ubyte(13)
         game_event.pack_float(0)
+        self.send(game_event)
 
         for z in range(-10, 11):
             for x in range(-10, 11):
                 self.generate_chunk(z, x)
 
-        self.send(game_event)
+        self.player.spawn()
 
         return 0
 

@@ -22,7 +22,7 @@ class Play(Stage):
             chunk.pack_short(4096)
 
             chunk.pack_ubyte(0)
-            chunk.pack_varint(0 if z >= 8 else 2)
+            chunk.pack_varint(0 if z >= 1 else 1)
             chunk.pack_varint(0)
 
             chunk.pack_ubyte(0)
