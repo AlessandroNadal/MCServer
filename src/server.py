@@ -23,7 +23,6 @@ class Server:
         player.pos = Position.from_player_data(player_data)
 
     def player_disconnect(self, player: Player):
-        print(player)
         self.stored_players[str(player.uuid)] = {
             "pos": {
                 "x": player.pos.x,

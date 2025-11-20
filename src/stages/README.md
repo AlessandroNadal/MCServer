@@ -17,7 +17,7 @@ puede ser Status o Login.
 
 Este es un estado final, que se utiliza para devolverle información al jugador sobre el estado del servidor,
 como jugadores, nombre, banner, versión...<br>
-El cliente lo usa para mostrar de una manera gráfica estos datos
+El cliente lo usa para mostrar de una manera gráfica estos datos<br>
 ![motd.png](../../media/motd.png)
 <br>
 Una vez el usuario ha recibido esta información se desconecta del servidor sin enviar paquetes adicionales

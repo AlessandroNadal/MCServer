@@ -1,7 +1,11 @@
 from typing import Callable
 
+import noise
+
 from src import Packet
 from src.buffer import Buffer
+from src.chunk import Chunk
+from src.enums import GameEvent
 from src.stages.stage import Stage, listen
 from src.structs import VarInt, Bytes, String, Byte, Boolean, UByte
 
@@ -16,42 +20,10 @@ SKIN_PART_FLAGS = {
 }
 
 
+
 class Configuration(Stage):
     listeners: dict[int, Callable] = dict()
 
-    def generate_chunk(self, x: int, z: int) -> None:
-        chunk_data = Packet(packet_id=0x28)
-        chunk_data.pack_int(x)
-        chunk_data.pack_int(z)
-        chunk_data.write(b"\x0A\x00")
-
-        chunk = Buffer()
-
-        for z in range(24):
-            chunk.pack_short(4096)
-
-            chunk.pack_ubyte(0)
-            chunk.pack_varint(0 if z >= 1 else 2)
-            chunk.pack_varint(0)
-
-            chunk.pack_ubyte(0)
-            chunk.pack_varint(0)
-            chunk.pack_varint(0)
-
-        chunk_data.pack_varint(len(chunk.getvalue()))
-        chunk_data.write(chunk.getvalue())
-
-        chunk_data.pack_varint(0)
-
-        chunk_data.pack_byte(0)
-        chunk_data.pack_byte(0)
-        chunk_data.pack_byte(0)
-        chunk_data.pack_byte(0)
-
-        chunk_data.pack_varint(0)
-        chunk_data.pack_varint(0)
-
-        self.send(chunk_data)
 
     @listen("minecraft:client_information")
     def client_information(
@@ -77,7 +49,7 @@ class Configuration(Stage):
 
     @listen("minecraft:finish_configuration")
     def finish_configuration(self):
-        login_play = Packet(packet_id=0x2C)
+        login_play = Packet(packet_id=0x2B)
         login_play.pack_int(69)
         login_play.pack_bool(False)
         login_play.pack_varint(4)
@@ -105,15 +77,15 @@ class Configuration(Stage):
 
         self.send(login_play)
 
-
-        game_event = Packet(packet_id=0x23)
-        game_event.pack_ubyte(13)
+        game_event = Packet(packet_id=0x22)
+        game_event.pack_ubyte(GameEvent.START_WAITING_FOR_LEVEL_CHUNKS)
         game_event.pack_float(0)
+
         self.send(game_event)
 
-        for z in range(-10, 11):
-            for x in range(-10, 11):
-                self.generate_chunk(z, x)
+        for z in range(-12, 13):
+            for x in range(-12, 13):
+                self.send(Chunk.generate_chunk(x, z))
 
         self.player.spawn()
 

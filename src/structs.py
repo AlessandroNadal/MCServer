@@ -43,11 +43,11 @@ class UByte(Struct):
 
 
 class Short(Struct):
-    fmt = "h"
+    fmt = ">h"
 
 
 class UShort(Struct):
-    fmt = ">h"
+    fmt = ">H"
 
 
 class Int(Struct):
@@ -56,6 +56,9 @@ class Int(Struct):
 
 class Long(Struct):
     fmt = ">q"
+
+class ULong(Struct):
+    fmt = ">Q"
 
 
 class Float(Struct):

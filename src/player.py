@@ -20,8 +20,7 @@ class Player:
         if self.pos is None:
             raise Exception("Player is not syncronized yet")
 
-        print(self.pos.__dict__)
-        player_position = Packet(packet_id=0x42)
+        player_position = Packet(packet_id=0x41)
         player_position.pack_varint(69)
         player_position.pack_double(self.pos.x)
         player_position.pack_double(self.pos.y)

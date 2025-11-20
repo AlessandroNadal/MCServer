@@ -59,7 +59,7 @@ class ServerProcess(Protocol):
         logger.debug(f"Next stage: {self.stage.__class__.__name__.title()}")
 
     def keep_alive(self) -> None:
-        keep_alive_packet = Packet(packet_id=0x27)
+        keep_alive_packet = Packet(packet_id=0x26)
         keep_alive_packet.pack_long(0)
         self.stage.send(keep_alive_packet)
 

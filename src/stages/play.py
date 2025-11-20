@@ -2,47 +2,13 @@ import math
 from typing import Callable
 
 from src import Packet
-from src.buffer import Buffer
+from src.chunk import Chunk
 from src.stages.stage import Stage, listen
-from src.structs import Double, Boolean, Float, Long, VarInt, Byte, UUID
+from src.structs import Double, Boolean, Float, Long, VarInt, Byte, UByte, Position, Int
 
 
 class Play(Stage):
     listeners: dict[int, Callable] = dict()
-
-    def generate_chunk(self, x: int, z: int) -> None:
-        chunk_data = Packet(packet_id=0x28)
-        chunk_data.pack_int(x)
-        chunk_data.pack_int(z)
-        chunk_data.write(b"\x0A\x00")
-
-        chunk = Buffer()
-
-        for z in range(24):
-            chunk.pack_short(4096)
-
-            chunk.pack_ubyte(0)
-            chunk.pack_varint(0 if z >= 1 else 1)
-            chunk.pack_varint(0)
-
-            chunk.pack_ubyte(0)
-            chunk.pack_varint(0)
-            chunk.pack_varint(0)
-
-        chunk_data.pack_varint(len(chunk.getvalue()))
-        chunk_data.write(chunk.getvalue())
-
-        chunk_data.pack_varint(0)
-
-        chunk_data.pack_byte(0)
-        chunk_data.pack_byte(0)
-        chunk_data.pack_byte(0)
-        chunk_data.pack_byte(0)
-
-        chunk_data.pack_varint(0)
-        chunk_data.pack_varint(0)
-
-        self.send(chunk_data)
 
     def handle_position(self, x: Double, y_feet: Double, z: Double, yaw: Float | None, pitch: Float | None):
         current_chunk_x = math.floor(self.player.pos.x / 16)
@@ -61,7 +27,7 @@ class Play(Stage):
         if current_chunk_x == new_chunk_x and current_chunk_z == new_chunk_z:
             return
 
-        set_chunk_cache_center = Packet(packet_id=0x58)
+        set_chunk_cache_center = Packet(packet_id=0x57)
         set_chunk_cache_center.pack_varint(new_chunk_x)
         set_chunk_cache_center.pack_varint(new_chunk_z)
         self.send(set_chunk_cache_center)
@@ -88,13 +54,21 @@ class Play(Stage):
                     continue
 
                 if current_chunk_range and not new_chunk_range:
-                    unload_chunk = Packet(packet_id=0x22)
+                    unload_chunk = Packet(packet_id=0x21)
                     unload_chunk.pack_int(chunk_z)
                     unload_chunk.pack_int(chunk_x)
                     self.send(unload_chunk)
 
                 if new_chunk_range:
-                    self.generate_chunk(chunk_x, chunk_z)
+                    self.send(Chunk.generate_chunk(chunk_x, chunk_z))
+
+    @listen("minecraft:player_abilities")
+    def player_abilities(self, flags: Byte) -> None:
+        pass
+
+    @listen("minecraft:player_input")
+    def player_input(self, flags: UByte) -> None:
+        pass
 
     @listen("minecraft:accept_teleportation")
     def accept_teleportation(self, teleport_id: VarInt):
@@ -131,7 +105,14 @@ class Play(Stage):
     def move_player_status_only(self, flags: Byte):
         pass
 
+    @listen("minecraft:player_action")
+    def player_action(self, status: VarInt, location: Position, face: Byte, sequence: VarInt):
+        pass
 
-    # @listen(0x25)
-    # def player_command(self, player_id: VarInt, action_id: VarInt, jump_boost: VarInt):
-    #     pass
+    @listen("minecraft:swing")
+    def swing(self):
+        pass
+
+    @listen("minecraft:player_loaded")
+    def player_loaded(self):
+        pass

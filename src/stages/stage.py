@@ -45,9 +45,9 @@ class Stage:
             self.logger.debug(f"Description: {description}")
             self.logger.debug(packet)
             if fn is None:
-                self.logger.warning(f"Packet with packet_id: {hex(packet.id)} not found")
+                self.logger.warning(f"Packet {self.__class__.__name__}:{hex(packet.id)} not found")
                 self.logger.debug(packet)
-                return
+                return None
 
         args = self.decode_args(packet)
         return fn(self, *args)

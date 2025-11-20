@@ -8,8 +8,8 @@ from src.structs import Long
 
 
 def get_status(
-        version_name: str = "1.21.4",
-        protocol_version: int = 769,
+        version_name: str = "1.21.8",
+        protocol_version: int = 772,
         max_players: int = 100,
         online_players: int = 0,
         image: str = "resources/status.png"
