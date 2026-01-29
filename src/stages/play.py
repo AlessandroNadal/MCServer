@@ -4,7 +4,7 @@ from typing import Callable
 from src import Packet
 from src.chunk import Chunk
 from src.stages.stage import Stage, listen
-from src.structs import Double, Boolean, Float, Long, VarInt, Byte, UByte, Position, Int
+from src.structs import Double, Boolean, Float, Long, VarInt, Byte, UByte, Position, Int, String, Bytes
 
 
 class Play(Stage):
@@ -116,3 +116,8 @@ class Play(Stage):
     @listen("minecraft:player_loaded")
     def player_loaded(self):
         pass
+
+    @listen("minecraft:chat")
+    def on_chat(self, message: String, timestamp: Long, salt: Long, other: Bytes):
+        for player in self.server.players:
+

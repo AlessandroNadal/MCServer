@@ -15,10 +15,10 @@ class ChunkSection:
 
 
 scale = 100.0
-octaves = 6
+octaves = 2
 persistence = 0.5
 lacunarity = 2.0
-
+modifier = 0.2
 
 class Chunk:
     """
@@ -64,7 +64,7 @@ class Chunk:
                                     lacunarity=lacunarity,
                                     repeatx=1024,
                                     repeaty=1024,
-                                    base=0)
+                                    base=0) * modifier
                 val = int(((val + 1) / 2) * 320)
                 l.append(val)
             heightmaps.append(l)

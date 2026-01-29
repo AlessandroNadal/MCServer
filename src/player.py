@@ -33,3 +33,6 @@ class Player:
         player_position.pack_int(0)
         player_position.send(self.protocol)
 
+    def send_message(self, text: str) -> None:
+        message = Packet(packet_id=0x77)
+
