@@ -17,19 +17,21 @@ class TAG(metaclass=abc.ABCMeta):
         self.name: str = name
         self.value: Any | Self = value
 
-    def __str__(self, indent: int = 0) -> str:
+    def to_string(self, indent=0) -> str:
         indent_value = INDENT_TEXT * indent
         s = f"{indent_value}{self.__class__.__name__}(\"{self.name}\")"
-
         if isinstance(self.value, list):
-            s += f"\n{indent_value}" + "{\n"
+            s += f"\n{indent_value}{{\n"
             for i in self.value:
-                s += f"{i.__str__(indent+1)}"
-            s += indent_value + "}\n"
+                s += f"{i.to_string(indent + 1)}"
+            s +=  f"{indent_value}}}\n"
         else:
             s += f": {self.value}\n"
 
         return s
+
+    def __str__(self) -> str:
+        return self.to_string()
 
     __repr__ = __str__
 
@@ -224,7 +226,7 @@ def print_bytes(bytess: bytes):
     print([f"{x:02x}" for x in bytess])
 
 
-with open("../servers.dat", "rb") as f:
+with open("servers.dat", "rb") as f:
     tag = TAG_COMPOUND.unpack_root(Buffer(f.read()))
 
 print(tag)
