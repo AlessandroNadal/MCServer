@@ -1,9 +1,13 @@
 import abc
 import struct
+import typing
 import uuid
 from io import BytesIO
 from typing import Any, ClassVar
 from uuid import UUID
+
+if typing.TYPE_CHECKING:
+    from src.buffer import Buffer
 
 
 class BaseStruct(metaclass=abc.ABCMeta):
@@ -26,7 +30,7 @@ class Struct(int, BaseStruct):
         return struct.pack(cls.fmt, val)
 
     @classmethod
-    def unpack(cls, buffer: BytesIO) -> bool:
+    def unpack(cls, buffer: "Buffer") -> int:
         return buffer.unpack(cls.fmt)
 
 
@@ -35,11 +39,11 @@ class Boolean(Struct):
 
 
 class Byte(Struct):
-    fmt = "b"
+    fmt = ">b"
 
 
 class UByte(Struct):
-    fmt = "B"
+    fmt = ">B"
 
 
 class Short(Struct):

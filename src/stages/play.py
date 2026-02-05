@@ -120,4 +120,4 @@ class Play(Stage):
     @listen("minecraft:chat")
     def on_chat(self, message: String, timestamp: Long, salt: Long, other: Bytes):
         for player in self.server.players:
-
+            pass
