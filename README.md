@@ -1,4 +1,5 @@
 # PuigCraft
+![Lobby header](https://www.cubecraft.net/attachments/minecraft-screenshot-2020-07-28-17-26-41-71-png.172335/)
 
 PuigCraft es una implementación parcial del protocolo de Minecraft Java Edition desarrollada en Python. El proyecto tiene como objetivo recrear el funcionamiento interno de un servidor de Minecraft, gestionando directamente la comunicación entre clientes y servidor mediante sockets TCP, procesamiento de paquetes y control de estados del protocolo.
 
