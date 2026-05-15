@@ -67,32 +67,13 @@ MCServer/
 ├── main.py
 ├── requirements.txt
 ├── src/
-│   ├── serverprocess/
+│   ├── serverprocess
 │   ├── stages/
-│   ├── packets/
+│   ├── packet
 │   ├── utils/
 │   └── ...
 └── README.md
 ```
-
-## Directorios principales
-
-### `src/`
-Contiene todo el código fuente del servidor.
-
-### `src/stages/`
-Implementación de los distintos estados del protocolo y la lógica asociada a cada fase de conexión.
-
-### `src/serverprocess/`
-Gestión de conexiones individuales y procesos asociados a cada jugador.
-
-### `src/packets/`
-Definición y procesamiento de paquetes enviados y recibidos.
-
-### `src/utils/`
-Funciones auxiliares y herramientas utilizadas por el resto del sistema.
-
----
 
 # Tecnologías utilizadas
 
